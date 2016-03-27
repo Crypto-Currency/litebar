@@ -994,7 +994,7 @@ boost::filesystem::path GetDefaultDataDir()
     return pathRet / "LiteBar";
 #else
     // Unix
-    return pathRet / ".litebar-kgw";
+    return pathRet / ".litebar";
 #endif
 #endif
 }
