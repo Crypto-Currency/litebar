@@ -1,4 +1,3 @@
-
 TEMPLATE = app
 TARGET =
 VERSION = 0.6.3
@@ -17,20 +16,20 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 # use: BOOST_THREAD_LIB_SUFFIX=_win32-...
 # or when linking against a specific BerkelyDB version: BDB_LIB_SUFFIX=-4.8
 
-windows:LIBS += -lshlwapi
-LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
-LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
-windows:LIBS += -lws2_32 -lole32 -loleaut32 -luuid -lgdi32
-LIBS += -lboost_system-mgw46-mt-sd-1_53 -lboost_filesystem-mgw46-mt-sd-1_53 -lboost_program_options-mgw46-mt-sd-1_53 -lboost_thread-mgw46-mt-sd-1_53
-BOOST_LIB_SUFFIX=-mgw46-mt-sd-1_53
-BOOST_INCLUDE_PATH=C:/deps/boost
-BOOST_LIB_PATH=C:/deps/boost/stage/lib
-BDB_INCLUDE_PATH=c:/deps/db/build_unix
-BDB_LIB_PATH=c:/deps/db/build_unix
-OPENSSL_INCLUDE_PATH=c:/deps/ssl/include
-OPENSSL_LIB_PATH=c:/deps/ssl
-MINIUPNPC_LIB_PATH=c:/deps/miniupnpc
-MINIUPNPC_INCLUDE_PATH=c:/deps
+#windows:LIBS += -lshlwapi
+#LIBS += $$join(BOOST_LIB_PATH,,-L,) $$join(BDB_LIB_PATH,,-L,) $$join(OPENSSL_LIB_PATH,,-L,) $$join(QRENCODE_LIB_PATH,,-L,)
+#LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
+#windows:LIBS += -lws2_32 -lole32 -loleaut32 -luuid -lgdi32
+#LIBS += -lboost_system-mgw46-mt-sd-1_53 -lboost_filesystem-mgw46-mt-sd-1_53 -#lboost_program_options-mgw46-mt-sd-1_53 -lboost_thread-mgw46-mt-sd-1_53
+#BOOST_LIB_SUFFIX=-mgw46-mt-sd-1_53
+#BOOST_INCLUDE_PATH=C:/deps/boost
+#BOOST_LIB_PATH=C:/deps/boost/stage/lib
+#BDB_INCLUDE_PATH=c:/deps/db/build_unix
+#BDB_LIB_PATH=c:/deps/db/build_unix
+#OPENSSL_INCLUDE_PATH=c:/deps/ssl/include
+#OPENSSL_LIB_PATH=c:/deps/ssl
+#MINIUPNPC_LIB_PATH=c:/deps/miniupnpc
+#MINIUPNPC_INCLUDE_PATH=c:/deps
 
 OBJECTS_DIR = build
 MOC_DIR = build
