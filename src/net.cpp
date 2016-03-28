@@ -1147,8 +1147,8 @@ void MapPort()
 
 // default seeds
 static const char *strDNSSeed[][2] = {
-    {"webcoin.us", "pool.webcoin.us"},
-    {"Other", "188.226.150.75"},
+//    {"webcoin.us", "pool.webcoin.us"}, // no longer available
+    {"Other", "litebar.co"},
 };
 
 void ThreadDNSAddressSeed(void* parg)
