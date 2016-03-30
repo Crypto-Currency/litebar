@@ -11,6 +11,8 @@
 
 #include <QAbstractItemDelegate>
 #include <QPainter>
+#include <QDesktopServices>
+#include <QUrl>
 
 #define DECORATION_SIZE 64
 #define NUM_ITEMS 3
@@ -108,6 +110,10 @@ OverviewPage::OverviewPage(QWidget *parent) :
 
     connect(ui->listTransactions, SIGNAL(clicked(QModelIndex)), this, SLOT(handleTransactionClicked(QModelIndex)));
 
+    // clicking on logo opens web browser to home page
+    connect(ui->HomeButton, SIGNAL (released()), this, SLOT (handleHomeButton()));
+    ui->HomeButton->setToolTip(tr("Click to go to Litebar Home page."));
+//    ui->HomeButton->setStyleSheet("QToolTip {background-color:rgb(255,233,142); color:black; border: 2px solid grey; border-radius: 10px; padding:2px 10px 2px 10px; font:11pt 'Comic Sans MS'}");
     // init "out of sync" warning labels
     ui->labelWalletStatus->setText("(" + tr("Out of sync") + ")");
     ui->labelTransactionsStatus->setText("(" + tr("Out of sync") + ")");
@@ -122,6 +128,10 @@ void OverviewPage::handleTransactionClicked(const QModelIndex &index)
         emit transactionClicked(filter->mapToSource(index));
 }
 
+void OverviewPage::handleHomeButton()
+{
+  QDesktopServices::openUrl(QUrl("http://BitBar.co"));
+}
 OverviewPage::~OverviewPage()
 {
     delete ui;
