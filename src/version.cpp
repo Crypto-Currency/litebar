@@ -38,7 +38,8 @@ const std::string CLIENT_NAME("Litebar");
 #define GIT_ARCHIVE 1
 #ifdef GIT_ARCHIVE
 #    define GIT_COMMIT_ID "2d35dc4"
-#    define GIT_COMMIT_DATE "$Format:%cD"
+//#    define GIT_COMMIT_DATE "$Format:%cD"
+#    define GIT_COMMIT_DATE "April 4 2016"
 #endif
 
 #define STRINGIFY(s) #s
