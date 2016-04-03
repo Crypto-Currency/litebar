@@ -26,15 +26,13 @@ addnode=65.102.140.115
 <br>
 
 ###Current zip Releases:
-*  Windows  QT [v.0.4.3.003](https://github.com/bar-qt_v0_4_3_004.zip) 
-*  Linux source - (none yet)
+*  Windows  QT [v.0.4.3.003](https://drive.google.com/file/d/0B1cnD3W8c0jtd2d5N0xTM1d1M0k/view?usp=sharing) 
 <br>
 <br>
 <br>
 
 ###Older Releases:
 * Windows  QT  - (none yet) 
-* Linux source - (none yet)
 
 
 ###LiteBar Web Site [LiteBar.co](http://litebar.co/)
