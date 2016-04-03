@@ -36,7 +36,7 @@
           </font>
          </property>
          <property name="text">
-          <string>Bitcoin Core</string>
+          <string>Litebar Information Console</string>
          </property>
         </widget>
        </item>

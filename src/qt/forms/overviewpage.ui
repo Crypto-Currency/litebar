@@ -211,46 +211,33 @@
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QPushButton" name="HomeButton">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
             <property name="minimumSize">
              <size>
               <width>160</width>
               <height>80</height>
              </size>
             </property>
-            <property name="font">
-             <font>
-              <kerning>false</kerning>
-             </font>
+            <property name="maximumSize">
+             <size>
+              <width>160</width>
+              <height>80</height>
+             </size>
             </property>
             <property name="cursor">
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
-<!--
-            <property name="styleSheet">
-             <string notr="true">background-color:transparent</string>
+            <property name="toolTip">
+             <string> Click to go to Litebar Home page. </string>
             </property>
-            <property name="text">
-             <string/>
-            </property>
--->
             <property name="icon">
              <iconset resource="../bitcoin.qrc">
-              <normaloff>:/icons/bitcoin</normaloff>:/icons/bitcoin</iconset>
+              <normaloff>:/images/logo</normaloff>:/images/logo</iconset>
             </property>
             <property name="iconSize">
              <size>
               <width>160</width>
               <height>80</height>
              </size>
-            </property>
-            <property name="flat">
-             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -374,7 +361,6 @@
   </layout>
  </widget>
  <resources>
-  <include location="../../../../bitbar/src/qt/bitcoin.qrc"/>
   <include location="../bitcoin.qrc"/>
  </resources>
  <connections/>

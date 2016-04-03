@@ -4,6 +4,7 @@
 #include "clientmodel.h"
 #include "bitcoinrpc.h"
 #include "guiutil.h"
+#include "version.h"
 
 #include <QTime>
 #include <QTimer>
@@ -163,7 +164,8 @@ void RPCConsole::setClientModel(ClientModel *model)
         // Provide initial values
         ui->clientVersion->setText(model->formatFullVersion());
         ui->clientName->setText(model->clientName());
-        ui->buildDate->setText(model->formatBuildDate());
+//        ui->buildDate->setText(model->formatBuildDate());
+        ui->buildDate->setText(CLIENT_DATE.c_str());
         ui->startupTime->setText(model->formatClientStartupTime());
 
         setNumConnections(model->getNumConnections());
