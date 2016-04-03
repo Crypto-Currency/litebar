@@ -1,5 +1,5 @@
 #LiteBar (LTB) - a fork of Litecoin (LTC)
-##The silver equivalence of BitBar with fast block time and fast confirmations (only 4 confirmations needed). 
+##The silver equivalence of BitBar with fast block time and fast confirmations (only 4 confirmations needed).
 <br>
 <br>
 * 3 minutes block target
@@ -15,7 +15,7 @@
 <br>
 <br>
 <br>
-###  litebar.conf
+###litebar.conf
 <pre>
 addnode=65.102.140.115
 </pre>
@@ -23,17 +23,17 @@ addnode=65.102.140.115
 <br>
 <br>
 <br>
-### Current zip Releases:
+###Current zip Releases:
 *  Windows  QT [v.0.4.3.003](https://github.com/bar-qt_v0_4_3_004.zip) 
 *  Linux source - (none yet)
 <br>
 <br>
 <br>
 
-### Older Releases:
+###Older Releases:
 * Windows  QT  - (none yet) 
 * Linux source - (none yet)
 
 
-###  LiteBar Web Site [LiteBar.co](http://litebar.co/)
-###  LTB Information Thread [bitcointalk.org](https://bitcointalk.org/index.php?topic=1413832.0)
+###LiteBar Web Site [LiteBar.co](http://litebar.co/)
+###LTB Information Thread [bitcointalk.org](https://bitcointalk.org/index.php?topic=1413832.0)
