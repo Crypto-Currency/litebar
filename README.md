@@ -26,7 +26,7 @@ addnode=65.102.140.115
 <br>
 
 ###Current zip Releases:
-*  Windows  QT [v.0.4.3.003](https://drive.google.com/file/d/0B1cnD3W8c0jtd2d5N0xTM1d1M0k/view?usp=sharing) 
+*  Windows  QT [v.0.4.3.004](https://drive.google.com/file/d/0B1cnD3W8c0jtN0RLdkFNVjhTbzA/view?usp=sharing) 
 <br>
 <br>
 <br>
