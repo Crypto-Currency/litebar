@@ -15,6 +15,7 @@
 <br>
 <br>
 <br>
+
 ###litebar.conf
 <pre>
 addnode=65.102.140.115
@@ -23,6 +24,7 @@ addnode=65.102.140.115
 <br>
 <br>
 <br>
+
 ###Current zip Releases:
 *  Windows  QT [v.0.4.3.003](https://github.com/bar-qt_v0_4_3_004.zip) 
 *  Linux source - (none yet)
