@@ -72,6 +72,10 @@ sudo apt-get install libqrencode-dev
 
 If using Boost 1.37, append -mt to the boost libraries in the makefile.
 
+if you get errors like:
+fatal error: boost/random/uniform_int_distribution.hpp: No such file or directory
+try this: 
+sudo apt-get install libboost1.48-all-dev
 
 Dependency Build Instructions: Gentoo
 -------------------------------------
