@@ -2525,7 +2525,18 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         if (!vRecv.empty())
             vRecv >> addrFrom >> nNonce;
         if (!vRecv.empty())
-            vRecv >> pfrom->strSubVer;
+        {
+          vRecv >> pfrom->strSubVer;
+          printf("peer connecting subver is %s",pfrom->strSubVer.c_str());
+          if(!pfrom->strSubVer.find("Litebar"))
+          {
+            printf("  -  disconnecting .....\n");
+            pfrom->fDisconnect = true;
+            return false;
+          }
+          printf("\n");
+        }
+
         if (!vRecv.empty())
             vRecv >> pfrom->nStartingHeight;
 
