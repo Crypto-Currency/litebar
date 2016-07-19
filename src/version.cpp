@@ -39,7 +39,7 @@ const std::string CLIENT_NAME("Litebar");
 #ifdef GIT_ARCHIVE
 #    define GIT_COMMIT_ID "2d35dc4"
 //#    define GIT_COMMIT_DATE "$Format:%cD"
-#    define GIT_COMMIT_DATE "April 4 2016"
+#    define GIT_COMMIT_DATE "July 19 2016"
 #endif
 
 #define BUILD_DESC_FROM_COMMIT(maj,min,rev,build,commit) \
