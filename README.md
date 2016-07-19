@@ -26,14 +26,13 @@ addnode=65.102.140.115
 <br>
 
 ###Current zip Releases:
-*  Windows  QT [v.0.4.3.004](https://drive.google.com/file/d/0B1cnD3W8c0jtN0RLdkFNVjhTbzA/view?usp=sharing) 
+*  Windows  QT [v.0.4.3.005](https://drive.google.com/file/d/0B1cnD3W8c0jtWHE1OVBadTN6RTg/view?usp=sharing) 
 <br>
 <br>
 <br>
 
 ###Older Releases:
-* Windows  QT  - (none yet) 
-
+*  Windows  QT [v.0.4.3.004](https://drive.google.com/file/d/0B1cnD3W8c0jtN0RLdkFNVjhTbzA/view?usp=sharing)
 
 ###LiteBar Web Site [LiteBar.co](http://litebar.co/)
 ###LTB Information Thread [bitcointalk.org](https://bitcointalk.org/index.php?topic=1413832.0)
