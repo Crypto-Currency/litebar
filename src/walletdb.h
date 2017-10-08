@@ -24,37 +24,6 @@ enum DBErrors
     DB_NEED_REWRITE
 };
 
-class CKeyMetadata
-{
-public:
-    static const int CURRENT_VERSION=1;
-    int nVersion;
-    int64 nCreateTime; // 0 means unknown
-
-    CKeyMetadata()
-    {
-        SetNull();
-    }
-    CKeyMetadata(int64 nCreateTime_)
-    {
-        nVersion = CKeyMetadata::CURRENT_VERSION;
-        nCreateTime = nCreateTime_;
-    }
-
-    IMPLEMENT_SERIALIZE
-    (
-        READWRITE(this->nVersion);
-        nVersion = this->nVersion;
-        READWRITE(nCreateTime);
-    )
-
-    void SetNull()
-    {
-        nVersion = CKeyMetadata::CURRENT_VERSION;
-        nCreateTime = 0;
-    }
-};
-
 /** Access to the wallet database (wallet.dat) */
 class CWalletDB : public CDB
 {
@@ -66,20 +35,20 @@ private:
     CWalletDB(const CWalletDB&);
     void operator=(const CWalletDB&);
 public:
-//    bool ReadName(const std::string& strAddress, std::string& strName)
-//    {
-//        strName = "";
-//        return Read(std::make_pair(std::string("name"), strAddress), strName);
-//    }
+    bool ReadName(const std::string& strAddress, std::string& strName)
+    {
+        strName = "";
+        return Read(std::make_pair(std::string("name"), strAddress), strName);
+    }
 
     bool WriteName(const std::string& strAddress, const std::string& strName);
 
     bool EraseName(const std::string& strAddress);
 
-//    bool ReadTx(uint256 hash, CWalletTx& wtx)
-//    {
-//        return Read(std::make_pair(std::string("tx"), hash), wtx);
-//    }
+    bool ReadTx(uint256 hash, CWalletTx& wtx)
+    {
+        return Read(std::make_pair(std::string("tx"), hash), wtx);
+    }
 
     bool WriteTx(uint256 hash, const CWalletTx& wtx)
     {
@@ -93,11 +62,11 @@ public:
         return Erase(std::make_pair(std::string("tx"), hash));
     }
 
-//    bool ReadKey(const CPubKey& vchPubKey, CPrivKey& vchPrivKey)
-//    {
-//        vchPrivKey.clear();
-//        return Read(std::make_pair(std::string("key"), vchPubKey.Raw()), vchPrivKey);
-//    }
+    bool ReadKey(const CPubKey& vchPubKey, CPrivKey& vchPrivKey)
+    {
+        vchPrivKey.clear();
+        return Read(std::make_pair(std::string("key"), vchPubKey.Raw()), vchPrivKey);
+    }
 
     bool WriteKey(const CPubKey& vchPubKey, const CPrivKey& vchPrivKey)
     {
@@ -105,14 +74,9 @@ public:
         return Write(std::make_pair(std::string("key"), vchPubKey.Raw()), vchPrivKey, false);
     }
 
-    bool WriteCryptedKey(const CPubKey& vchPubKey, const std::vector<unsigned char>& vchCryptedSecret, const CKeyMetadata &keyMeta)
+    bool WriteCryptedKey(const CPubKey& vchPubKey, const std::vector<unsigned char>& vchCryptedSecret, bool fEraseUnencryptedKey = true)
     {
         nWalletDBUpdated++;
-        bool fEraseUnencryptedKey = true;
-
-        if(!Write(std::make_pair(std::string("keymeta"), vchPubKey), keyMeta))
-             return false;
-
         if (!Write(std::make_pair(std::string("ckey"), vchPubKey.Raw()), vchCryptedSecret, false))
             return false;
         if (fEraseUnencryptedKey)
@@ -208,19 +172,13 @@ public:
 
     bool ReadAccount(const std::string& strAccount, CAccount& account);
     bool WriteAccount(const std::string& strAccount, const CAccount& account);
-private:
-    bool WriteAccountingEntry(const uint64 nAccEntryNum, const CAccountingEntry& acentry);
-public:
     bool WriteAccountingEntry(const CAccountingEntry& acentry);
     int64 GetAccountCreditDebit(const std::string& strAccount);
     void ListAccountCreditDebit(const std::string& strAccount, std::list<CAccountingEntry>& acentries);
 
-    DBErrors ReorderTransactions(CWallet*);
     DBErrors LoadWallet(CWallet* pwallet);
+    DBErrors FindWalletTx(CWallet* pwallet, std::vector<uint256>& vTxHash, std::vector<CWalletTx>& vWtx);
     DBErrors ZapWalletTx(CWallet* pwallet, std::vector<CWalletTx>& vWtx);
-
-    static bool Recover(CDBEnv& dbenv, std::string filename, bool fOnlyKeys);
-    static bool Recover(CDBEnv& dbenv, std::string filename);
 
 };
 

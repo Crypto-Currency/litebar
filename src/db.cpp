@@ -10,6 +10,10 @@
 #include <boost/version.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <string>
+
+#include "ui_interface.h"
+
 
 #ifndef WIN32
 #include "sys/stat.h"
@@ -73,7 +77,7 @@ bool CDBEnv::Open(boost::filesystem::path pathEnv_)
     filesystem::path pathLogDir = pathDataDir / "database";
     filesystem::create_directory(pathLogDir);
     filesystem::path pathErrorFile = pathDataDir / "db.log";
-    printf("dbenv.open LogDir=%s ErrorFile=%s\n", pathLogDir.string().c_str(), pathErrorFile.string().c_str());
+    printf("dbenv.open LogDir=%s\nErrorFile=%s\n", pathLogDir.string().c_str(), pathErrorFile.string().c_str());
 
     unsigned int nEnvFlags = 0;
     if (GetBoolArg("-privdb", true))
@@ -105,68 +109,6 @@ bool CDBEnv::Open(boost::filesystem::path pathEnv_)
 
     fDbEnvInit = true;
     return true;
-}
-
-CDBEnv::VerifyResult CDBEnv::Verify(std::string strFile, bool (*recoverFunc)(CDBEnv& dbenv, std::string strFile))
-{
-    LOCK(cs_db);
-    assert(mapFileUseCount.count(strFile) == 0);
-
-    Db db(&dbenv, 0);
-    int result = db.verify(strFile.c_str(), NULL, NULL, 0);
-    if (result == 0)
-        return VERIFY_OK;
-    else if (recoverFunc == NULL)
-        return RECOVER_FAIL;
-
-    // Try to recover:
-    bool fRecovered = (*recoverFunc)(*this, strFile);
-    return (fRecovered ? RECOVER_OK : RECOVER_FAIL);
-}
-
-bool CDBEnv::Salvage(std::string strFile, bool fAggressive,
-                     std::vector<CDBEnv::KeyValPair >& vResult)
-{
-    LOCK(cs_db);
-    assert(mapFileUseCount.count(strFile) == 0);
-
-    u_int32_t flags = DB_SALVAGE;
-    if (fAggressive) flags |= DB_AGGRESSIVE;
-
-    stringstream strDump;
-
-    Db db(&dbenv, 0);
-    int result = db.verify(strFile.c_str(), NULL, &strDump, flags);
-    if (result != 0)
-    {
-        printf("ERROR: db salvage failed\n");
-        return false;
-    }
-
-    // Format of bdb dump is ascii lines:
-    // header lines...
-    // HEADER=END
-    // hexadecimal key
-    // hexadecimal value
-    // ... repeated
-    // DATA=END
-
-    string strLine;
-    while (!strDump.eof() && strLine != "HEADER=END")
-        getline(strDump, strLine); // Skip past header
-
-    std::string keyHex, valueHex;
-    while (!strDump.eof() && keyHex != "DATA=END")
-    {
-        getline(strDump, keyHex);
-        if (keyHex != "DATA_END")
-        {
-            getline(strDump, valueHex);
-            vResult.push_back(make_pair(ParseHex(keyHex),ParseHex(valueHex)));
-        }
-    }
-
-    return (result == 0);
 }
 
 void CDBEnv::CheckpointLSN(std::string strFile)
@@ -546,6 +488,8 @@ bool CTxDB::LoadBlockIndex()
     if (fRequestShutdown)
         return true;
 
+    string mess="calculating best chain...";
+    uiInterface.InitMessage(_(mess.c_str()));
     // Calculate bnChainWork
     vector<pair<int, CBlockIndex*> > vSortedByHeight;
     vSortedByHeight.reserve(mapBlockIndex.size());
@@ -577,6 +521,8 @@ bool CTxDB::LoadBlockIndex()
       hashBestChain.ToString().substr(0,20).c_str(), nBestHeight,
       DateTimeStrFormat("%x %H:%M:%S", pindexBest->GetBlockTime()).c_str());
 
+    mess="best chain height "+boost::to_string(nBestHeight);
+    uiInterface.InitMessage(_(mess.c_str()));
     // Load bnBestInvalidWork, OK if it doesn't exist
     ReadBestInvalidWork(bnBestInvalidWork);
 
@@ -588,10 +534,26 @@ bool CTxDB::LoadBlockIndex()
     if (nCheckDepth > nBestHeight)
         nCheckDepth = nBestHeight;
     printf("Verifying last %i blocks at level %i\n", nCheckDepth, nCheckLevel);
+    mess="verifying last "+boost::to_string(nCheckDepth);
+    uiInterface.InitMessage(_(mess.c_str()));
+
     CBlockIndex* pindexFork = NULL;
     map<pair<unsigned int, unsigned int>, CBlockIndex*> mapBlockPos;
+
+    unsigned int tempcount=0;
+    unsigned int steptemp=0;
+    string tempmess;
+
     for (CBlockIndex* pindex = pindexBest; pindex && pindex->pprev; pindex = pindex->pprev)
     {
+tempcount++;
+if(tempcount>=100)
+{
+  steptemp ++;
+  tempmess=mess+" / "+ boost::to_string(pindex);
+  uiInterface.InitMessage(_(tempmess.c_str()));
+  tempcount=0;
+}
         if (fRequestShutdown || pindex->nHeight < nBestHeight-nCheckDepth)
             break;
         CBlock block;
@@ -705,6 +667,7 @@ bool CTxDB::LoadBlockIndex()
         block.SetBestChain(txdb, pindexFork);
     }
 
+printf("counted out %d\n",tempcount);
     return true;
 }
 
@@ -712,6 +675,9 @@ bool CTxDB::LoadBlockIndex()
 
 bool CTxDB::LoadBlockIndexGuts()
 {
+    string mess="loading block index ";
+    uiInterface.InitMessage(_(mess.c_str()));
+
     // Get database cursor
     Dbc* pcursor = GetCursor();
     if (!pcursor)
@@ -719,6 +685,11 @@ bool CTxDB::LoadBlockIndexGuts()
 
     // Load mapBlockIndex
     unsigned int fFlags = DB_SET_RANGE;
+
+    unsigned int tempcount=0;
+    unsigned int steptemp=0;
+    string tempmess;
+
     loop
     {
         // Read next record
@@ -756,6 +727,15 @@ bool CTxDB::LoadBlockIndexGuts()
             pindexNew->nBits          = diskindex.nBits;
             pindexNew->nNonce         = diskindex.nNonce;
 
+            tempcount ++;
+            if(tempcount>=1000)
+            {
+              steptemp ++;
+              tempmess=mess+ boost::to_string(steptemp * 1000);
+              uiInterface.InitMessage(_(tempmess.c_str()));
+              tempcount=0;
+            }
+
             // Watch for genesis block
             if (pindexGenesisBlock == NULL && diskindex.GetBlockHash() == hashGenesisBlock)
                 pindexGenesisBlock = pindexNew;
@@ -774,6 +754,10 @@ bool CTxDB::LoadBlockIndexGuts()
     }
     pcursor->close();
 
+    steptemp=steptemp*1000 +tempcount;
+    tempmess=mess+ boost::to_string(steptemp);
+    uiInterface.InitMessage(_(tempmess.c_str()));
+//    printf("gut-load counted out %s\n",tempmess.c_str());
     return true;
 }
 

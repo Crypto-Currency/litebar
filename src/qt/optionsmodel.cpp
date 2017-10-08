@@ -47,6 +47,7 @@ void OptionsModel::Init()
     fMinimizeOnClose = settings.value("fMinimizeOnClose", false).toBool();
     nTransactionFee = settings.value("nTransactionFee").toLongLong();
     language = settings.value("language", "").toString();
+    fCoinControlFeatures = settings.value("fCoinControlFeatures", false).toBool();
 
     // These are shared with core Bitcoin; we want
     // command-line options to override the GUI settings:
@@ -60,6 +61,24 @@ void OptionsModel::Init()
         SoftSetBoolArg("-detachdb", settings.value("detachDB").toBool());
     if (!language.isEmpty())
         SoftSetArg("-lang", language.toStdString());
+}
+
+void OptionsModel::Reset()
+{
+    QSettings settings;
+
+    // Remove all entries in this QSettings object
+    settings.clear();
+
+    // default setting for OptionsModel::StartAtStartup - disabled
+    if (GUIUtil::GetStartOnSystemStartup())
+        GUIUtil::SetStartOnSystemStartup(false);
+
+    // Re-Init to get default values
+    Init();
+
+    // Ensure Upgrade() is not running again by setting the bImportFinished flag
+    settings.setValue("bImportFinished", true);
 }
 
 bool OptionsModel::Upgrade()
@@ -170,12 +189,15 @@ QVariant OptionsModel::data(const QModelIndex & index, int role) const
             return QVariant(bitdb.GetDetach());
         case Language:
             return settings.value("language", "");
+          case CoinControlFeatures:
+            return QVariant(fCoinControlFeatures);
         default:
             return QVariant();
         }
     }
     return QVariant();
 }
+
 bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, int role)
 {
     bool successful = true; /* set to false on parse error */
@@ -230,6 +252,7 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
         case Fee:
             nTransactionFee = value.toLongLong();
             settings.setValue("nTransactionFee", nTransactionFee);
+            emit transactionFeeChanged(nTransactionFee);
             break;
         case DisplayUnit:
             nDisplayUnit = value.toInt();
@@ -249,6 +272,13 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
         case Language:
             settings.setValue("language", value);
             break;
+        case CoinControlFeatures:
+            {
+              fCoinControlFeatures = value.toBool();
+              settings.setValue("fCoinControlFeatures", fCoinControlFeatures);
+              emit coinControlFeaturesChanged(fCoinControlFeatures);
+            }
+            break;
         default:
             break;
         }
@@ -261,6 +291,11 @@ bool OptionsModel::setData(const QModelIndex & index, const QVariant & value, in
 qint64 OptionsModel::getTransactionFee()
 {
     return nTransactionFee;
+}
+
+bool OptionsModel::getCoinControlFeatures()
+{
+        return fCoinControlFeatures;
 }
 
 bool OptionsModel::getMinimizeToTray()

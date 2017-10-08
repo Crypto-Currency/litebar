@@ -57,6 +57,11 @@ namespace boost {
 # include <sys/prctl.h>
 #endif
 
+#ifndef WIN32
+#include <execinfo.h>
+#endif
+
+
 using namespace std;
 
 map<string, string> mapArgs;
@@ -1295,16 +1300,4 @@ void RenameThread(const char* name)
     // Prevent warnings for unused parameters...
     (void)name;
 #endif
-}
-
-bool NewThread(void(*pfn)(void*), void* parg)
-{
-    try
-    {
-        boost::thread(pfn, parg); // thread detaches when out of scope
-    } catch(boost::thread_resource_error &e) {
-        printf("Error creating thread: %s\n", e.what());
-        return false;
-    }
-    return true;
 }

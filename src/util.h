@@ -56,6 +56,26 @@ static const int64 CENT = 1000000;
 #endif
 #endif
 
+/* Format characters for (s)size_t and ptrdiff_t */
+#if defined(_MSC_VER) || defined(__MSVCRT__)
+  /* (s)size_t and ptrdiff_t have the same size specifier in MSVC:
+     http://msdn.microsoft.com/en-us/library/tcxf1dw6%28v=vs.100%29.aspx
+   */
+  #define PRIszx    "Ix"
+  #define PRIszu    "Iu"
+  #define PRIszd    "Id"
+  #define PRIpdx    "Ix"
+  #define PRIpdu    "Iu"
+  #define PRIpdd    "Id"
+#else /* C99 standard */
+  #define PRIszx    "zx"
+  #define PRIszu    "zu"
+  #define PRIszd    "zd"
+  #define PRIpdx    "tx"
+  #define PRIpdu    "tu"
+  #define PRIpdd    "td"
+#endif
+
 // This is needed because the foreach macro can't get over the comma in pair<t1, t2>
 #define PAIRTYPE(t1, t2)    std::pair<t1, t2>
 
@@ -87,27 +107,6 @@ T* alignup(T* p)
 #define strlwr(psz)         to_lower(psz)
 #define _strlwr(psz)        to_lower(psz)
 #define MAX_PATH            1024
-
-/* Format characters for (s)size_t and ptrdiff_t */
-#if defined(_MSC_VER) || defined(__MSVCRT__)
-  /* (s)size_t and ptrdiff_t have the same size specifier in MSVC:
-     http://msdn.microsoft.com/en-us/library/tcxf1dw6%28v=vs.100%29.aspx
-   */
-  #define PRIszx    "Ix"
-  #define PRIszu    "Iu"
-  #define PRIszd    "Id"
-  #define PRIpdx    "Ix"
-  #define PRIpdu    "Iu"
-  #define PRIpdd    "Id"
-#else /* C99 standard */
-  #define PRIszx    "zx"
-  #define PRIszu    "zu"
-  #define PRIszd    "zd"
-  #define PRIpdx    "tx"
-  #define PRIpdu    "tu"
-  #define PRIpdd    "td"
-#endif
-
 inline void Sleep(int64 n)
 {
     /*Boost has a year 2038 problem— if the request sleep time is past epoch+2^31 seconds the sleep returns instantly.
@@ -568,14 +567,58 @@ public:
 
 
 
-bool NewThread(void(*pfn)(void*), void* parg);
 
+
+// Note: It turns out we might have been able to use boost::thread
+// by using TerminateThread(boost::thread.native_handle(), 0);
 #ifdef WIN32
+typedef HANDLE pthread_t;
+
+inline pthread_t CreateThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
+{
+    DWORD nUnused = 0;
+    HANDLE hthread =
+        CreateThread(
+            NULL,                        // default security
+            0,                           // inherit stack size from parent
+            (LPTHREAD_START_ROUTINE)pfn, // function pointer
+            parg,                        // argument
+            0,                           // creation option, start immediately
+            &nUnused);                   // thread identifier
+    if (hthread == NULL)
+    {
+        printf("Error: CreateThread() returned %d\n", GetLastError());
+        return (pthread_t)0;
+    }
+    if (!fWantHandle)
+    {
+        CloseHandle(hthread);
+        return (pthread_t)-1;
+    }
+    return hthread;
+}
+
 inline void SetThreadPriority(int nPriority)
 {
     SetThreadPriority(GetCurrentThread(), nPriority);
 }
 #else
+inline pthread_t CreateThread(void(*pfn)(void*), void* parg, bool fWantHandle=false)
+{
+    pthread_t hthread = 0;
+    int ret = pthread_create(&hthread, NULL, (void*(*)(void*))pfn, parg);
+    if (ret != 0)
+    {
+        printf("Error: pthread_create() returned %d\n", ret);
+        return (pthread_t)0;
+    }
+    if (!fWantHandle)
+    {
+        pthread_detach(hthread);
+        return (pthread_t)-1;
+    }
+    return hthread;
+}
 
 #define THREAD_PRIORITY_LOWEST          PRIO_MAX
 #define THREAD_PRIORITY_BELOW_NORMAL    2

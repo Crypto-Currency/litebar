@@ -108,7 +108,7 @@ void ipcInit()
         return;
     }
 
-    if (!NewThread(ipcThread, mq))
+    if (!CreateThread(ipcThread, mq))
     {
         delete mq;
         return;
