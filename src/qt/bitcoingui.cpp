@@ -88,6 +88,7 @@ BitcoinGUI::BitcoinGUI(QWidget *parent):
 
     // Create application menu bar
     createMenuBar();
+    menuBar()->setNativeMenuBar(false);// menubar on form instead
 
     // Create the toolbars
     createToolBars();
@@ -315,20 +316,26 @@ void BitcoinGUI::createMenuBar()
 
     // Configure the menus
     QMenu *file = appMenuBar->addMenu(tr("&File"));
-    file->addAction(backupWalletAction);
     file->addAction(exportAction);
-#ifndef FIRST_CLASS_MESSAGING
-    file->addAction(signMessageAction);
-    file->addAction(verifyMessageAction);
-#endif
     file->addSeparator();
     file->addAction(quitAction);
 
     QMenu *settings = appMenuBar->addMenu(tr("&Settings"));
-    settings->addAction(encryptWalletAction);
-    settings->addAction(changePassphraseAction);
-    settings->addSeparator();
     settings->addAction(optionsAction);
+
+    QMenu *wallet = appMenuBar->addMenu(tr("&Wallet"));
+     wallet->addAction(backupWalletAction);
+    wallet->addSeparator();
+    wallet->addAction(encryptWalletAction);
+    wallet->addAction(changePassphraseAction);
+//    wallet->addAction(unlockWalletStakeAction);
+    wallet->addSeparator();
+//    wallet->addAction(checkWalletAction);
+//    wallet->addAction(repairWalletAction);
+//    wallet->addAction(zapWalletAction);
+    wallet->addSeparator();
+    wallet->addAction(signMessageAction);
+    wallet->addAction(verifyMessageAction);
 
     QMenu *help = appMenuBar->addMenu(tr("&Help"));
     help->addAction(openRPCConsoleAction);
