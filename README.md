@@ -1,7 +1,8 @@
-#LiteBar (LTB) - a fork of Litecoin (LTC)
-##The silver equivalence of BitBar with fast block time and fast confirmations (only 4 confirmations needed).
+# LiteBar (LTB) - a fork of Litecoin (LTC)
+### The silver equivalence of BitBar with fast block time and fast confirmations (only 4 confirmations needed).
 <br>
 <br>
+
 * 3 minutes block target
 * 4 transactions to confirm
 * Transaction fee = 0.001
@@ -16,7 +17,7 @@
 <br>
 <br>
 
-###litebar.conf
+### litebar.conf
 <pre>
 addnode=65.102.140.115
 </pre>
@@ -25,14 +26,14 @@ addnode=65.102.140.115
 <br>
 <br>
 
-###Current zip Releases:
-*  Windows  QT [v.0.4.3.005](https://drive.google.com/file/d/0B1cnD3W8c0jtWHE1OVBadTN6RTg/view?usp=sharing) 
+### Current zip Releases:
+*  Windows  QT [v.0.7.4.1](https://drive.google.com/open?id=0B1cnD3W8c0jtbnRfclA3R2k2Tm8) 
 <br>
 <br>
 <br>
 
-###Older Releases:
-*  Windows  QT [v.0.4.3.004](https://drive.google.com/file/d/0B1cnD3W8c0jtN0RLdkFNVjhTbzA/view?usp=sharing)
+### Other stuff:
+*  macOS-qt wallet, and bootstrap also at the link above.
 
 ###LiteBar Web Site [LiteBar.co](http://litebar.co/)
 ###LTB Information Thread [bitcointalk.org](https://bitcointalk.org/index.php?topic=1413832.0)
