@@ -35,5 +35,5 @@ addnode=65.102.140.115
 ### Other stuff:
 *  macOS-qt wallet, and bootstrap also at the link above.
 
-###LiteBar Web Site [LiteBar.co](http://litebar.co/)
-###LTB Information Thread [bitcointalk.org](https://bitcointalk.org/index.php?topic=1413832.0)
+### LiteBar Web Site [LiteBar.co](http://litebar.co/)
+### LTB Information Thread [bitcointalk.org](https://bitcointalk.org/index.php?topic=1413832.0)
