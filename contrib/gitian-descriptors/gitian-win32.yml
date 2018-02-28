@@ -1,5 +1,5 @@
 ---
-name: "bitcoin-scrypt"
+name: "litebar"
 suites:
 - "precise"
 architectures:
@@ -55,19 +55,19 @@ script: |
   export FAKETIME=$REFERENCE_DATETIME
   export TZ=UTC
   rm -f Makefile.Release
-  $HOME/qt/src/bin/qmake -spec unsupported/win32-g++-cross MINIUPNPC_LIB_PATH=$HOME/build/miniupnpc MINIUPNPC_INCLUDE_PATH=$HOME/build/ BDB_LIB_PATH=$HOME/build/db-4.8.30.NC/build_unix  BDB_INCLUDE_PATH=$HOME/build/db-4.8.30.NC/build_unix BOOST_LIB_PATH=$HOME/build/boost_1_49_0/stage/lib BOOST_INCLUDE_PATH=$HOME/build/boost_1_49_0 BOOST_LIB_SUFFIX=-mt-s BOOST_THREAD_LIB_SUFFIX=_win32-mt-s OPENSSL_LIB_PATH=$HOME/build/openssl-1.0.1g OPENSSL_INCLUDE_PATH=$HOME/build/openssl-1.0.1g/include QRENCODE_LIB_PATH=$HOME/build/qrencode-3.2.0/.libs QRENCODE_INCLUDE_PATH=$HOME/build/qrencode-3.2.0 USE_QRCODE=1 INCLUDEPATH=$HOME/build DEFINES=BOOST_THREAD_USE_LIB BITCOIN_NEED_QT_PLUGINS=1 QMAKE_LRELEASE=lrelease QMAKE_CXXFLAGS=-frandom-seed=bitcoin-scrypt QMAKE_LFLAGS=-frandom-seed=bitcoin-scrypt USE_BUILD_INFO=1
+  $HOME/qt/src/bin/qmake -spec unsupported/win32-g++-cross MINIUPNPC_LIB_PATH=$HOME/build/miniupnpc MINIUPNPC_INCLUDE_PATH=$HOME/build/ BDB_LIB_PATH=$HOME/build/db-4.8.30.NC/build_unix  BDB_INCLUDE_PATH=$HOME/build/db-4.8.30.NC/build_unix BOOST_LIB_PATH=$HOME/build/boost_1_49_0/stage/lib BOOST_INCLUDE_PATH=$HOME/build/boost_1_49_0 BOOST_LIB_SUFFIX=-mt-s BOOST_THREAD_LIB_SUFFIX=_win32-mt-s OPENSSL_LIB_PATH=$HOME/build/openssl-1.0.1g OPENSSL_INCLUDE_PATH=$HOME/build/openssl-1.0.1g/include QRENCODE_LIB_PATH=$HOME/build/qrencode-3.2.0/.libs QRENCODE_INCLUDE_PATH=$HOME/build/qrencode-3.2.0 USE_QRCODE=1 INCLUDEPATH=$HOME/build DEFINES=BOOST_THREAD_USE_LIB BITCOIN_NEED_QT_PLUGINS=1 QMAKE_LRELEASE=lrelease QMAKE_CXXFLAGS=-frandom-seed=litebar QMAKE_LFLAGS=-frandom-seed=litebar USE_BUILD_INFO=1
   make $MAKEOPTS
-  i586-mingw32msvc-strip release/Bitcoin-sCrypt.exe
-  cp release/Bitcoin-sCrypt.exe $OUTDIR/
+  i586-mingw32msvc-strip release/litebar-qt.exe
+  cp release/litebar-qt.exe $OUTDIR/
   #
   cd src
   export LD_PRELOAD=/usr/lib/faketime/libfaketime.so.1
   export FAKETIME=$REFERENCE_DATETIME
   export TZ=UTC
-  make -f makefile.linux-mingw $MAKEOPTS DEPSDIR=$HOME/build Bitcoin-sCryptd.exe USE_UPNP=0 DEBUGFLAGS="-frandom-seed=bitcoin-scrypt"
-  i586-mingw32msvc-strip Bitcoin-sCryptd.exe
+  make -f makefile.linux-mingw $MAKEOPTS DEPSDIR=$HOME/build litebard.exe USE_UPNP=0 DEBUGFLAGS="-frandom-seed=litebar"
+  i586-mingw32msvc-strip litebard.exe
   mkdir $OUTDIR/daemon
-  cp Bitcoin-sCryptd.exe $OUTDIR/daemon
+  cp litebard.exe $OUTDIR/daemon
   cd ..
   mv ../nsis .
   cd nsis/src
@@ -75,4 +75,4 @@ script: |
   cp ../../release/* ../release/
   cp ../../src/*.exe .
   makensis ../share/setup.nsi
-  cp ../share/Bitcoin-sCrypt-*-win32-setup.exe $OUTDIR/
+  cp ../share/litebar-*-win32-setup.exe $OUTDIR/
