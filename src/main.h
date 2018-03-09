@@ -46,6 +46,8 @@ static const int fHaveUPnP = true;
 static const int fHaveUPnP = false;
 #endif
 
+// time to ditch KimotoGravityWell and switch to DarkGravityWave3
+static const int VERSION3_SWITCH_BLOCK = 438000;
 
 extern CScript COINBASE_FLAGS;
 
