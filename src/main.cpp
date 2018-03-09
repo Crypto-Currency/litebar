@@ -1121,10 +1121,10 @@ unsigned int static DarkGravityWave3(const CBlockIndex* pindexLast, const CBlock
     bnNew /= nTargetTimespan;
 	
 	// debug print
-    printf("DarkGravityWave3 RETARGET\n");
-    printf("nTargetTimespan = %"PRI64d"    nActualTimespan = %"PRI64d"\n", nTargetTimespan, nActualTimespan);
-    printf("Before: %08x  %s\n", pindexLast->nBits, CBigNum().SetCompact(pindexLast->nBits).getuint256().ToString().c_str());
-    printf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.getuint256().ToString().c_str());
+//    printf("DarkGravityWave3 RETARGET\n");
+//    printf("nTargetTimespan = %"PRI64d"    nActualTimespan = %"PRI64d"\n", nTargetTimespan, nActualTimespan);
+//    printf("Before: %08x  %s\n", pindexLast->nBits, CBigNum().SetCompact(pindexLast->nBits).getuint256().ToString().c_str());
+//    printf("After:  %08x  %s\n", bnNew.GetCompact(), bnNew.getuint256().ToString().c_str());
 
     if (bnNew > bnProofOfWorkLimit){
         bnNew = bnProofOfWorkLimit;
@@ -2636,7 +2636,13 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         {
           vRecv >> pfrom->strSubVer;
           printf("peer connecting subver is %s",pfrom->strSubVer.c_str());
-          int iSubVer=pfrom->strSubVer.find("Litebar");
+
+          int iSubVer=0;          
+          if(nTime < VERSION3_SWITCH_BLOCK)
+            iSubVer=pfrom->strSubVer.find("Litebar");
+          else
+            iSubVer=pfrom->strSubVer.find("Litebar:0.7.5");
+
           if(iSubVer < 1)
           {
             printf("  -  disconnecting .....\n");
