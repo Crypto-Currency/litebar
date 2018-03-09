@@ -2637,12 +2637,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
           vRecv >> pfrom->strSubVer;
           printf("peer connecting subver is %s",pfrom->strSubVer.c_str());
 
-          int iSubVer=0;          
-          if(nTime < VERSION3_SWITCH_BLOCK)
-            iSubVer=pfrom->strSubVer.find("Litebar");
-          else
-            iSubVer=pfrom->strSubVer.find("Litebar:0.7.5");
-
+          int iSubVer=pfrom->strSubVer.find("Litebar");
           if(iSubVer < 1)
           {
             printf("  -  disconnecting .....\n");
