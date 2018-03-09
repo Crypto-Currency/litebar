@@ -1135,11 +1135,11 @@ unsigned int static DarkGravityWave3(const CBlockIndex* pindexLast, const CBlock
 
 unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlock *pblock)
 {
-  if (pindexLast->nHeight+1 >= 8000)
-    return GetNextWorkRequired_V2(pindexLast, pblock);
-
   if (pindexLast->nHeight > VERSION3_SWITCH_BLOCK)
     return DarkGravityWave3(pindexLast, pblock);
+
+  if (pindexLast->nHeight+1 >= 8000)
+    return GetNextWorkRequired_V2(pindexLast, pblock);
 
   return GetNextWorkRequired_V1(pindexLast, pblock);
 }
