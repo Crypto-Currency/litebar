@@ -35,7 +35,8 @@ static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
 static const int64 MIN_TX_FEE = 100000; //0.001
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
 static const int64 MIN_RELAY_TX_FEE = MIN_TX_FEE;
-static const int64 MAX_MONEY = 1350000 * COIN; // LiteBar: maximum of 1.35M coins
+//static const int64 MAX_MONEY = 1350000 * COIN; // LiteBar: maximum of 1.35M coins
+static const int64 MAX_MONEY = 1400000 * COIN; // LiteBar: maximum of 1.35M coins
 inline bool MoneyRange(int64 nValue) { return (nValue >= 0 && nValue <= MAX_MONEY); }
 static const int COINBASE_MATURITY = 70;
 // Threshold for nLockTime: below this value it is interpreted as block number, otherwise as UNIX timestamp.
