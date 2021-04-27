@@ -1,10 +1,13 @@
 TEMPLATE = app
 TARGET =litebar-qt
-VERSION = 0.6.3
-INCLUDEPATH += src src/json src/qt
+VERSION = 0.7.6.1
+INCLUDEPATH += src src/json src/qt /usr/include/libdb4
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE #BOOST_THREAD_PROVIDES_GENERIC_SHARED_MUTEX_ON_WIN __NO_SYSTEM_INCLUDES USE_IPV6
+BOOST_ASIO_ENABLE_OLD_SERVICES
 CONFIG += no_include_pwd
-CONFIG += thread
+CONFIG += thread -w
+QT += widgets
+QT += network
 
 #QT += dbus
 #QT -= dbus
@@ -105,7 +108,7 @@ contains(BITCOIN_NEED_QT_PLUGINS, 1) {
     DEFINES += HAVE_BUILD_INFO
 }
 
-QMAKE_CXXFLAGS += -msse2
+QMAKE_CXXFLAGS += -msse2 -w
 QMAKE_CFLAGS += -msse2
 QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter -Wstack-protector
 
@@ -305,7 +308,7 @@ OTHER_FILES += \
 # platform specific defaults, if not overridden on command line
 isEmpty(BOOST_LIB_SUFFIX) {
     macx:BOOST_LIB_SUFFIX = -mt
-    windows:BOOST_LIB_SUFFIX =
+    windows:BOOST_LIB_SUFFIX = -mgw92-mt-s-1_65
 }
 
 isEmpty(BOOST_THREAD_LIB_SUFFIX) {
@@ -332,7 +335,7 @@ isEmpty(BOOST_INCLUDE_PATH) {
     macx:BOOST_INCLUDE_PATH = /opt/local/include
 }
 
-windows:LIBS += -lws2_32 -lshlwapi -lmswsock
+#windows:LIBS += -lws2_32 -lshlwapi -lmswsock
 windows:DEFINES += WIN32
 windows:RC_FILE = src/qt/res/bitcoin-qt.rc
 
@@ -369,7 +372,7 @@ LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
 # -lgdi32 has to happen after -lcrypto (see  #681)
 windows:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
 LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
-windows:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
+windows:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX -static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lpthread -Wl,--stack,16777216
 
 contains(RELEASE, 1) {
     !windows:!macx {
