@@ -15,6 +15,9 @@
 #include "json/json_spirit_writer_template.h"
 #include "json/json_spirit_utils.h"
 
+#include <boost/asio.hpp>
+#include <boost/asio/ssl.hpp>
+
 json_spirit::Object JSONRPCError(int code, const std::string& message);
 
 extern json_spirit::Value ValueFromAmount(int64 amount);
@@ -28,6 +31,18 @@ extern json_spirit::Value resendtx(const json_spirit::Array& params, bool fHelp)
 void ThreadRPCServer(void* parg);
 int CommandLineRPC(int argc, char *argv[]);
 
+ // Boost Support for 1.70+
+#if BOOST_VERSION >= 107000
+    #define GetIOService(s) ((boost::asio::io_context&)(s).get_executor().context())
+    #define GetIOServiceFromPtr(s) ((boost::asio::io_context&)(s->get_executor().context())) // this one
+    typedef boost::asio::io_context ioContext;
+
+#else
+    #define GetIOService(s) ((s).get_io_service())
+    #define GetIOServiceFromPtr(s) ((s)->get_io_service())
+    typedef boost::asio::io_service ioContext;
+#endif
+    
 /** Convert parameter values for RPC call from strings to command-specific JSON objects. */
 json_spirit::Array RPCConvertValues(const std::string &strMethod, const std::vector<std::string> &strParams);
 
