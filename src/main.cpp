@@ -891,8 +891,8 @@ if(nHeight>7200) nSubsidy = 2 * COIN;
     // Hereafter, subsidy is cut in half every 438000 blocks, which will occur approximately every 2.5 years and end at year 5
     nSubsidy >>= (nHeight / 438000);
     
-//cout<<"money supply "<<pindexBest->nMoneySupply<<"\n";
-if (pindexBest->nMoneySupply >= MAX_MONEY)
+
+if(nHeight >= 1120000)
   nSubsidy=0;
 //cout<<"reward is "<<nSubsidy+nFees<<"\n";
 
