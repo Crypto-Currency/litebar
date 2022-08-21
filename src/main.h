@@ -33,6 +33,11 @@ static const unsigned int MAX_BLOCK_SIZE_GEN = MAX_BLOCK_SIZE/2;
 static const unsigned int MAX_BLOCK_SIGOPS = MAX_BLOCK_SIZE/50;
 static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
 static const int64 MIN_TX_FEE = 100000; //0.001
+
+// change block for increasing txfees
+static const int TX_FEE_CHANGE = 1160000;
+static const int64 MIN_TX_FEE2 = 1000; //0.1
+
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
 static const int64 MIN_RELAY_TX_FEE = MIN_TX_FEE;
 //static const int64 MAX_MONEY = 1350000 * COIN; // LiteBar: maximum of 1.35M coins
