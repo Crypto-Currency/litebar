@@ -35,8 +35,9 @@ static const unsigned int MAX_ORPHAN_TRANSACTIONS = MAX_BLOCK_SIZE/100;
 static const int64 MIN_TX_FEE = 100000; //0.001
 
 // change block for increasing txfees
-static const int TX_FEE_CHANGE = 1160000;
-static const int64 MIN_TX_FEE2 = 1000; //0.1
+static const int TX_FEE_CHANGE = 1140000;
+// new txfee
+static const int64 MIN_TX_FEE2 = 10000000; //0.1
 
 static const int64 MIN_TXOUT_AMOUNT = MIN_TX_FEE;
 static const int64 MIN_RELAY_TX_FEE = MIN_TX_FEE;

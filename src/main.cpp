@@ -496,7 +496,7 @@ int64 CTransaction::GetMinFee(unsigned int nBlockSize, bool fAllowFree,
                               enum GetMinFee_mode mode, unsigned int nBytes) const
 {
   //  static const int64 MIN_TX_FEE = 100000; //0.001
-  //  static const int64 MIN_TX_FEE2 = 1000; //0.1
+  //  static const int64 MIN_TX_FEE2 = 10000000; //0.1
   int64 MIN_TXFEE;
   if(pindexBest->nHeight > TX_FEE_CHANGE)
   {
