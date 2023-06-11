@@ -117,8 +117,29 @@ contains(BITCOIN_NEED_QT_PLUGINS, 1) {
     DEFINES += HAVE_BUILD_INFO
 }
 
-QMAKE_CXXFLAGS += -msse2 -w
-QMAKE_CFLAGS += -msse2
+#QMAKE_CXXFLAGS += -msse2 -w
+#QMAKE_CFLAGS += -msse2
+# If we have an arm device, we can't use sse2, so define as thumb
+# Because of scrypt_mine.cpp, we also have to add a compile
+#     flag that states we *really* don't have SSE
+# Otherwise, assume sse2 exists
+QMAKE_XCPUARCH = $$QMAKE_HOST.arch
+equals(QMAKE_XCPUARCH, armv7l) {
+    message(Building without SSE2 support)
+	QMAKE_CXXFLAGS += -DNOSSE
+    QMAKE_CFLAGS += -DNOSSE
+}
+else:equals(QMAKE_XCPUARCH, armv6l) {
+    message(Building without SSE2 support)
+	QMAKE_CXXFLAGS += -DNOSSE
+    QMAKE_CFLAGS += -DNOSSE
+}
+else {
+    message(Building with SSE2 support)
+    QMAKE_CXXFLAGS += -msse2 -w
+    QMAKE_CFLAGS += -msse2
+}
+#endif
 QMAKE_CXXFLAGS_WARN_ON = -fdiagnostics-show-option -Wall -Wextra -Wformat -Wformat-security -Wno-unused-parameter -Wstack-protector
 
 # Input
@@ -255,7 +276,10 @@ SOURCES += src/qt/bitcoin.cpp src/qt/bitcoingui.cpp \
     src/qt/qtipcserver.cpp \
     src/qt/rpcconsole.cpp \
     src/scrypt.c \
-    src/noui.cpp
+    src/noui.cpp \
+    src/scrypt-x86.S \
+    src/scrypt-x86_64.S \
+    src/scrypt-arm.S \
 
 RESOURCES += \
     src/qt/bitcoin.qrc
